@@ -1,0 +1,132 @@
+/* Paleta simples: azul-escuro para destaque, cinza-claro para fundo.*/
+* {
+    -fx-accent: #afafaf;
+    -fx-fundo-claro: #F4F6F8;
+    -fx-borda: #D7DCE1;
+}
+
+.root {
+    -fx-font-family: "Segoe UI", sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: -fx-fundo-claro;
+}
+
+/* Cabeçalho no topo da janela */
+.cabecalho {
+    -fx-background-color: -fx-accent;
+    -fx-padding: 14 20 14 20;
+}
+.cabecalho .label {
+    -fx-text-fill: white;
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+}
+.cabecalho .subtitulo {
+    -fx-text-fill: rgba(255,255,255,0.75);
+    -fx-font-size: 11px;
+    -fx-font-weight: normal;
+}
+.cabecalho .marca-texto {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
+
+/* Lista de relatórios */
+.lista-relatorios {
+    -fx-background-color: white;
+    -fx-border-color: -fx-borda;
+    -fx-border-width: 0 1 0 0;
+}
+.lista-relatorios .list-cell {
+    -fx-padding: 10 14 10 14;
+    -fx-text-fill: #333;
+}
+.lista-relatorios .list-cell:filled:selected {
+    -fx-background-color: -fx-accent;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+.lista-relatorios .list-cell:filled:hover:selected {
+    -fx-background-color: -fx-accent;
+}
+.lista-relatorios .list-cell:filled:hover {
+    -fx-background-color: #E8EEF3;
+}
+
+/* Painel direito */
+.painel-direita {
+    -fx-background-color: -fx-fundo-claro;
+}
+.titulo-parametros {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #222;
+}
+.descricao-relatorio {
+    -fx-text-fill: #666;
+    -fx-font-style: italic;
+}
+.rotulo-campo {
+    -fx-font-weight: bold;
+    -fx-text-fill: #333;
+    -fx-font-size: 12px;
+}
+
+.text-field, .date-picker, .combo-box {
+    -fx-background-color: white;
+    -fx-border-color: -fx-borda;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 6 8 6 8;
+}
+.text-field:focused, .date-picker:focused, .combo-box:focused {
+    -fx-border-color: -fx-accent;
+}
+
+.scroll-pane, .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.botao-principal {
+    -fx-background-color: -fx-accent;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 9 22 9 22;
+    -fx-background-radius: 4;
+    -fx-cursor: hand;
+}
+.botao-principal:hover {
+    -fx-background-color: derive(-fx-accent, -12%);
+}
+.botao-principal:disabled {
+    -fx-opacity: 0.5;
+}
+
+.botao-secundario {
+    -fx-background-color: white;
+    -fx-border-color: -fx-borda;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-padding: 9 18 9 18;
+    -fx-cursor: hand;
+}
+.botao-secundario:hover {
+    -fx-background-color: #EEF1F4;
+}
+.botao-secundario:disabled {
+    -fx-opacity: 0.5;
+}
+
+.status-label {
+    -fx-text-fill: #444;
+    -fx-padding: 8 0 0 0;
+}
+
+.split-pane {
+    -fx-background-color: -fx-fundo-claro;
+}
+.split-pane-divider {
+    -fx-background-color: -fx-borda;
+    -fx-padding: 0 1 0 0;
+}
