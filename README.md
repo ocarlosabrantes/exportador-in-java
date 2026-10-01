@@ -74,12 +74,3 @@ Crie um `.sql` em `reports/`. O nome do arquivo vira o identificador do relatór
   `type=choice` com `options=A;B` vira lista, `type=hidden` não aparece e usa sempre o
   padrão).
 - Não precisa recompilar: o `.sql` é lido do disco a cada execução.
-
-## Empacotar como instalador (para os PCs da empresa)
-
-    mvn clean package
-    jpackage --input target --name "Sunnyvale - Relatórios" --main-jar exportador-in-java.jar ^
-      --main-class br.com.sunnyvale.reports.DesktopApp --type exe --icon icone.ico ^
-      --app-version 1.0.0 --win-shortcut --win-menu
-
-Copie `reports/` e `config.properties` para a pasta onde o instalador instalar o programa.
