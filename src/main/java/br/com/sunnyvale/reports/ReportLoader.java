@@ -20,7 +20,8 @@ import java.util.stream.Stream;
  */
 final class ReportLoader {
 
-    private ReportLoader() { }
+    private ReportLoader() {
+    }
 
     static List<ReportDefinition> loadAll(Path dir) throws IOException {
         if (!Files.isDirectory(dir)) {
@@ -42,6 +43,7 @@ final class ReportLoader {
         String id = name.substring(0, name.length() - 4);
         String title = id;
         String description = "";
+        boolean requerLogin = false;
         List<ReportDefinition.Param> params = new ArrayList<>();
         StringBuilder sql = new StringBuilder();
 
@@ -55,6 +57,8 @@ final class ReportLoader {
                     description = c.substring(12).trim();
                 } else if (c.startsWith("param:")) {
                     params.add(parseParam(c.substring(6)));
+                } else if (c.startsWith("requer_login:")) {
+                    requerLogin = c.substring(13).trim().equalsIgnoreCase("true");
                 }
                 continue;
             }
@@ -68,7 +72,7 @@ final class ReportLoader {
         if (body.isEmpty()) {
             throw new IOException("Arquivo sem SQL: " + file);
         }
-        return new ReportDefinition(id, title, description, params, body);
+        return new ReportDefinition(id, title, description, params, body, requerLogin);
     }
 
     private static ReportDefinition.Param parseParam(String spec) {

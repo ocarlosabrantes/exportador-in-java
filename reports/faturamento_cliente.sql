@@ -1,5 +1,5 @@
 -- title: Faturamento por Cliente
--- description: Notas fiscais de saída normais (tipo N) agrupadas por cliente. Campos em branco = sem limite.
+-- description: Pedidos de compra detalhados por item, com produto, fornecedor, valores e data de entrega. Campos em branco = sem limite.
 -- param: filial | default=@filial | desc=Filial
 -- param: filial_sa1 | default= | type=hidden | desc=Filial da SA1 (vazio se a tabela for compartilhada)
 -- param: data_de | default=@inicio_mes | type=date | desc=Emissão de (dd/mm/aaaa)

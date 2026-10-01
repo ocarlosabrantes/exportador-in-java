@@ -46,7 +46,7 @@ final class PdfExporter {
                     .map(e -> e.getKey() + "=" + e.getValue())
                     .collect(Collectors.joining("; "));
             String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-            doc.add(new Paragraph("Parâmetros: " + paramText + "  |  Gerado em " + now, infoFont));
+            doc.add(new Paragraph("Gerado em " + now, infoFont));
             if (r.truncated()) {
                 doc.add(new Paragraph("ATENÇÃO: resultado limitado a " + r.rows().size() + " linhas.", infoFont));
             }

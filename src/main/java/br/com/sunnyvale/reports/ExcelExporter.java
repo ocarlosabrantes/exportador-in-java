@@ -66,7 +66,7 @@ final class ExcelExporter {
                     .map(e -> e.getKey() + "=" + e.getValue())
                     .collect(Collectors.joining("; "));
             String now = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-            sh.createRow(1).createCell(0).setCellValue("Parâmetros: " + paramText + "  |  Gerado em " + now);
+            sh.createRow(1).createCell(0).setCellValue("Gerado em " + now);
 
             if (r.truncated()) {
                 sh.createRow(2).createCell(0).setCellValue(
