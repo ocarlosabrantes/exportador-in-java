@@ -1,4 +1,8 @@
-package br.com.sunnyvale.reports;
+package br.com.sunnyvale.reports.cli;
+
+import br.com.sunnyvale.reports.core.*;
+import br.com.sunnyvale.reports.export.ExcelExporter;
+import br.com.sunnyvale.reports.export.PdfExporter;
 
 import java.nio.file.Files;
 import java.nio.file.Path;

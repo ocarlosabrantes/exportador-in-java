@@ -1,5 +1,8 @@
-package br.com.sunnyvale.reports;
+package br.com.sunnyvale.reports.export;
 
+import br.com.sunnyvale.reports.core.Formatters;
+import br.com.sunnyvale.reports.core.ReportDefinition;
+import br.com.sunnyvale.reports.core.ReportResult;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -23,11 +26,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-final class ExcelExporter {
+public final class ExcelExporter {
 
-    private ExcelExporter() { }
+    private ExcelExporter() {
+    }
 
-    static void export(Path file, ReportDefinition def, Map<String, String> params, ReportResult r) throws IOException {
+    public static void export(Path file, ReportDefinition def, Map<String, String> params, ReportResult r) throws IOException {
         int cols = r.columns().size();
         try (SXSSFWorkbook wb = new SXSSFWorkbook(200)) {
             String sheetName = WorkbookUtil.createSafeSheetName(def.title());

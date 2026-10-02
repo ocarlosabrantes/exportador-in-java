@@ -1,4 +1,4 @@
-package br.com.sunnyvale.reports;
+package br.com.sunnyvale.reports.core;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -8,9 +8,9 @@ import java.nio.file.Path;
 import java.util.Properties;
 
 /** Configuração lida de config.properties; variáveis de ambiente _DB_* têm prioridade. */
-record AppConfig(String url, String user, String password, String filial, String tableSuffix) {
+public record AppConfig(String url, String user, String password, String filial, String tableSuffix) {
 
-    static AppConfig load(Path file) throws IOException {
+    public static AppConfig load(Path file) throws IOException {
         Properties p = new Properties();
         if (Files.exists(file)) {
             try (Reader r = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {

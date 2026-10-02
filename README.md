@@ -41,7 +41,7 @@ ganhar um relatório.
 1. Copie `config.example.properties` para `config.properties` e preencha `db.url`,
    `db.user` e `db.table_suffix` (empresa + `0`, ex.: empresa 01 → `010`).
 2. A senha não fica no arquivo — veja "Senha do banco" abaixo.
-3. No IntelliJ: `Edit Configurations`, Main class `br.com.sunnyvale.reports.DesktopApp`,
+3. No IntelliJ: `Edit Configurations`, Main class `br.com.sunnyvale.reports.ui.DesktopApp`,
    Working directory na raiz do projeto.
 4. Se faltar o JavaFX (`Error: JavaFX runtime components are missing`), baixe o SDK em
    https://gluonhq.com/products/javafx/ (versão 21) e adicione em VM options:

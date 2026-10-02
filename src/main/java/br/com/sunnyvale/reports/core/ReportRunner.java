@@ -1,4 +1,4 @@
-package br.com.sunnyvale.reports;
+package br.com.sunnyvale.reports.core;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,12 +10,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-final class ReportRunner {
+public final class ReportRunner {
 
-    private ReportRunner() { }
+    private ReportRunner() {
+    }
 
-    static ReportResult run(Connection con, ReportDefinition def, Map<String, String> values,
-                            String tableSuffix, int maxRows) throws SQLException {
+    public static ReportResult run(Connection con, ReportDefinition def, Map<String, String> values,
+                                   String tableSuffix, int maxRows) throws SQLException {
         String raw = def.sql().replace("${SUF}", tableSuffix);
         String head = raw.stripLeading().toUpperCase(Locale.ROOT);
         if (!head.startsWith("SELECT") && !head.startsWith("WITH")) {

@@ -1,4 +1,4 @@
-package br.com.sunnyvale.reports;
+package br.com.sunnyvale.reports.core;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -18,12 +18,12 @@ import java.util.stream.Stream;
  * </pre>
  * Demais linhas iniciadas por "--" são comentários e são descartadas.
  */
-final class ReportLoader {
+public final class ReportLoader {
 
     private ReportLoader() {
     }
 
-    static List<ReportDefinition> loadAll(Path dir) throws IOException {
+    public static List<ReportDefinition> loadAll(Path dir) throws IOException {
         if (!Files.isDirectory(dir)) {
             throw new IOException("Pasta de relatórios não encontrada: " + dir.toAbsolutePath());
         }

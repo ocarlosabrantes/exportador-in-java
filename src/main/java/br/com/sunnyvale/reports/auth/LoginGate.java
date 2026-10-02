@@ -1,11 +1,11 @@
-package br.com.sunnyvale.reports;
+package br.com.sunnyvale.reports.auth;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Properties;
 
-final class LoginGate {
-    static boolean validar(
+public final class LoginGate {
+    public static boolean validar(
             String usuarioDigitado,
             String senhaDigitada,
             Path arquivoLogin

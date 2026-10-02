@@ -1,5 +1,8 @@
-package br.com.sunnyvale.reports;
+package br.com.sunnyvale.reports.export;
 
+import br.com.sunnyvale.reports.core.Formatters;
+import br.com.sunnyvale.reports.core.ReportDefinition;
+import br.com.sunnyvale.reports.core.ReportResult;
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Element;
@@ -23,15 +26,16 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-final class PdfExporter {
+public final class PdfExporter {
 
     private static final Font FOOT = new Font(Font.HELVETICA, 8, Font.NORMAL, Color.GRAY);
     private static final Color HEAD_BG = new Color(0x33, 0x4E, 0x68);
     private static final Color ZEBRA = new Color(0xF3, 0xF5, 0xF7);
 
-    private PdfExporter() { }
+    private PdfExporter() {
+    }
 
-    static void export(Path file, ReportDefinition def, Map<String, String> params, ReportResult r) throws IOException {
+    public static void export(Path file, ReportDefinition def, Map<String, String> params, ReportResult r) throws IOException {
         Document doc = new Document(PageSize.A4.rotate(), 24, 24, 28, 36);
         try (OutputStream out = Files.newOutputStream(file)) {
             PdfWriter writer = PdfWriter.getInstance(doc, out);

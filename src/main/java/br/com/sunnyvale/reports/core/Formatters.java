@@ -1,4 +1,4 @@
-package br.com.sunnyvale.reports;
+package br.com.sunnyvale.reports.core;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -9,15 +9,18 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-final class Formatters {
+public final class Formatters {
 
     private static final DateTimeFormatter YMD = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final DecimalFormatSymbols BR = DecimalFormatSymbols.getInstance(Locale.forLanguageTag("pt-BR"));
 
-    private Formatters() { }
+    private Formatters() {
+    }
 
-    /** Tokens aceitos em defaults e em --param: @hoje, @ontem, @inicio_mes, @fim_mes, @filial. */
-    static String resolveToken(String v, AppConfig cfg) {
+    /**
+     * Tokens aceitos em defaults e em --param: @hoje, @ontem, @inicio_mes, @fim_mes, @filial.
+     */
+    public static String resolveToken(String v, AppConfig cfg) {
         if (v == null) {
             return "";
         }
@@ -32,14 +35,18 @@ final class Formatters {
         };
     }
 
-    /** Colunas cujo alias começa com "Data" ou "DT_" recebem datas AAAAMMDD do banco convertidas para dd/MM/aaaa. */
-    static boolean isDateLabel(String label) {
+    /**
+     * Colunas cujo alias começa com "Data" ou "DT_" recebem datas AAAAMMDD do banco convertidas para dd/MM/aaaa.
+     */
+    public static boolean isDateLabel(String label) {
         String l = label.toLowerCase();
         return l.startsWith("data") || l.startsWith("dt_");
     }
 
-    /** Remove o preenchimento à direita típico do banco SQL, formata datas e trata nulos. */
-    static Object normalize(String label, Object v) {
+    /**
+     * Remove o preenchimento à direita típico do banco SQL, formata datas e trata nulos.
+     */
+    public static Object normalize(String label, Object v) {
         if (v == null) {
             return "";
         }
@@ -53,18 +60,20 @@ final class Formatters {
         return s;
     }
 
-    static boolean isInteger(Number n) {
+    public static boolean isInteger(Number n) {
         return n instanceof Long || n instanceof Integer || n instanceof Short || n instanceof Byte
                 || n instanceof BigInteger || (n instanceof BigDecimal b && b.scale() <= 0);
     }
 
-    static String formatNumber(Number n) {
+    public static String formatNumber(Number n) {
         DecimalFormat f = new DecimalFormat(isInteger(n) ? "#,##0" : "#,##0.00##", BR);
         return f.format(n);
     }
 
-    /** Aceita dd/MM/aaaa, AAAAMMDD ou vazio e devolve AAAAMMDD (ou vazio). */
-    static String toDbDate(String text) {
+    /**
+     * Aceita dd/MM/aaaa, AAAAMMDD ou vazio e devolve AAAAMMDD (ou vazio).
+     */
+    public static String toDbDate(String text) {
         String t = text == null ? "" : text.trim();
         if (t.isEmpty()) {
             return "";
@@ -91,8 +100,10 @@ final class Formatters {
         return y + m + d;
     }
 
-    /** AAAAMMDD para dd/MM/aaaa (para mostrar na tela); outros valores voltam como estão. */
-    static String toDisplayDate(String ymd) {
+    /**
+     * AAAAMMDD para dd/MM/aaaa (para mostrar na tela); outros valores voltam como estão.
+     */
+    public static String toDisplayDate(String ymd) {
         return ymd != null && ymd.matches("\\d{8}")
                 ? ymd.substring(6) + "/" + ymd.substring(4, 6) + "/" + ymd.substring(0, 4) : (ymd == null ? "" : ymd);
     }

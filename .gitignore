@@ -1,2 +1,6 @@
 # Project exclude paths
 /target/
+/login.properties
+/saida/
+/config.properties
+/exportador-in-java.zip

@@ -1,14 +1,14 @@
-package br.com.sunnyvale.reports;
+package br.com.sunnyvale.reports.core;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-final class Db {
+public final class Db {
 
     private Db() { }
 
-    static Connection connect(AppConfig cfg) throws SQLException {
+    public static Connection connect(AppConfig cfg) throws SQLException {
         if (cfg.url().isBlank()) {
             throw new IllegalArgumentException("db.url não configurado (config.properties ou variável DB_URL).");
         }

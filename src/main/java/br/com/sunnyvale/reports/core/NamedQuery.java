@@ -1,4 +1,4 @@
-package br.com.sunnyvale.reports;
+package br.com.sunnyvale.reports.core;
 
 import java.util.ArrayList;
 import java.util.List;
