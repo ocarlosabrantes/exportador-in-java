@@ -3,38 +3,25 @@
 ## Por que esse projeto existe
 
 Na Sunnyvale, quando o ERP ficava instável, os usuários simplesmente não
-conseguiam emitir os relatórios de que precisavam — o ERP travava ou caía, e o trabalho do
+conseguiam emitir os relatórios de que precisavam, o ERP travava ou caía, e o trabalho do
 dia parava. Esse projeto nasceu para resolver essa dor específica: ele lê direto do banco
-SQL, sem depender do ERP estar de pé, e exporta os relatórios
-para Excel e PDF.
+SQL, sem depender do ERP e exporta os relatórios para Excel e PDF.
 
-Hoje ele já resolve o problema original. Os relatórios são salvos em `C:\temp` e o projeto
-segue em evolução — a ideia é ir ampliando aos poucos (mais relatórios, tela mais amigável,
-instalador para os PCs da empresa), não é um software "fechado".
-
-## Status atual
-
-- **Funcional:** roda contra o banco de produção via um usuário somente leitura.
-- **Interface:** tela desktop (JavaFX) — lista de relatórios à esquerda, formulário de
-  parâmetros no meio (gerado automaticamente a partir de cada `.sql`), exportação para
-  Excel e PDF à direita.
-- **Saída:** os arquivos gerados vão para `C:\temp` (a pasta de saída ainda não é
-  configurável pela tela — ver "Próximos passos").
-- **Ainda não distribuído:** roda hoje pelo IntelliJ; o empacotamento como instalador
-  (`.exe`, via `jpackage`) está documentado mas ainda não foi gerado para os outros PCs.
+Hoje ele já resolve o problema e os relatórios são salvos em `C:\temp`. Inicialmente o projeto é em desktop, 
+mas segue em evolução. A ideia é ir ampliando aos poucos (mais relatórios, tela mais amigável e etc.).
 
 ## Relatórios disponíveis hoje
 
 | Relatório | O que traz |
 |---|---|
-| Saldo em Estoque | Saldo por produto e armazém (SB2 + SB1), com valor pelo custo médio |
-| Pedidos de Venda | Pedidos com valor total, valor faturado e nota fiscal (SC5 + SC6 + SA1) |
 | Faturamento por Cliente | Notas fiscais de saída normais, agrupadas por cliente (SF2) |
 | Inconsistências de Estoque | Saldo negativo ou produto sem cadastro na SB1 |
+| Pedidos de Compra 🔒| Pedidos de compra detalhados por item, com produto, fornecedor, valores e data de entrega. (SC7 + SB1) |
+| Pedidos de Venda | Pedidos com valor total, valor faturado e nota fiscal (SC5 + SC6 + SA1) |
+| Saldo em Estoque | Saldo por produto e armazém (SB2 + SB1), com valor pelo custo médio |
+| Estoque por Lote/Sub-Lote | Posição de estoque por lote e sub-lote, com produto, armazém, saldo, empenho e validade. (SB8 + SB1 + NNR) |
 
 Cada um é um arquivo `.sql` em `reports/`, com os parâmetros declarados no próprio arquivo
-(ver "Como adicionar um relatório novo" abaixo) — a tela não precisa de código novo para
-ganhar um relatório.
 
 ## Como rodar (ambiente de desenvolvimento)
 
