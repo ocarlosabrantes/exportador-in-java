@@ -1,6 +1,6 @@
 # Exportador In Java
 
-## Por que esse projeto existe
+## Por que esse projeto existe:
 
 Na Sunnyvale, quando o ERP ficava instável, os usuários simplesmente não
 conseguiam emitir os relatórios de que precisavam, o ERP travava ou caía, e o trabalho do
@@ -10,7 +10,7 @@ SQL, sem depender do ERP e exporta os relatórios para Excel e PDF.
 Hoje ele já resolve o problema e os relatórios são salvos em `C:\temp`. Inicialmente o projeto é em desktop, 
 mas segue em evolução. A ideia é ir ampliando aos poucos (mais relatórios, tela mais amigável e etc.).
 
-## Relatórios disponíveis hoje
+## Relatórios disponíveis hoje:
 
 | Relatório | O que traz |
 |---|---|
@@ -23,7 +23,7 @@ mas segue em evolução. A ideia é ir ampliando aos poucos (mais relatórios, t
 
 Cada um é um arquivo `.sql` em `reports/`, com os parâmetros declarados no próprio arquivo
 
-## Como rodar (ambiente de desenvolvimento)
+## Como rodar (ambiente de desenvolvimento):
 
 1. Copie `config.example.properties` para `config.properties` e preencha `db.url`,
    `db.user` e `db.table_suffix` (empresa + `0`, ex.: empresa 01 → `010`).
@@ -35,7 +35,7 @@ Cada um é um arquivo `.sql` em `reports/`, com os parâmetros declarados no pr�
 
        --module-path "C:\caminho\para\javafx-sdk-21\lib" --add-modules javafx.controls
 
-## Senha do banco
+## Conexão com o banco:
 
 Não fica em texto no `config.properties`. Defina como variável de ambiente do Windows:
 
@@ -44,7 +44,7 @@ Não fica em texto no `config.properties`. Defina como variável de ambiente do 
 O `AppConfig` dá prioridade à variável de ambiente sobre o arquivo. Feche e abra de novo
 o IntelliJ/PowerShell depois do `setx` para a variável valer.
 
-## Como adicionar um relatório novo
+## Como adicionar um relatório novo:
 
 Crie um `.sql` em `reports/`. O nome do arquivo vira o identificador do relatório na tela.
 
