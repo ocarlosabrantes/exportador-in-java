@@ -270,6 +270,25 @@ public final class DesktopApp extends Application {
             case "date" -> {
                 DatePicker dp = new DatePicker();
                 dp.setPromptText("dd/mm/aaaa (vazio = sem limite)");
+                aplicarMascaraData(dp);   // Chamada da função - carlos.abrantes
+                dp.setConverter(new javafx.util.StringConverter<LocalDate>() {
+                    private final DateTimeFormatter formato = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+                    @Override
+                    public String toString(LocalDate data) {
+                        return data == null ? "" : data.format(formato);
+                    }
+
+                    @Override
+                    public LocalDate fromString(String texto) {
+                        if (texto == null || texto.isBlank()) return null;
+                        try {
+                            return LocalDate.parse(texto, formato);
+                        } catch (Exception e) {
+                            return null;
+                        }
+                    }
+                });
                 if (!valorPadrao.isBlank()) {
                     try {
                         String ymd = valorPadrao.matches("\\d{8}") ? valorPadrao : Formatters.toDbDate(valorPadrao);
@@ -293,6 +312,31 @@ public final class DesktopApp extends Application {
                 yield tf;
             }
         };
+    }
+
+    private void aplicarMascaraData(DatePicker dp) {
+        TextFormatter<String> mascara = new TextFormatter<>(change -> {
+            if (!change.isContentChange()) {
+                return change; // só moveu o cursor, nada a filtrar
+            }
+            String digitos = change.getControlNewText().replaceAll("[^0-9]", "");
+            if (digitos.length() > 8) {
+                return null; // rejeita: já tem dd+mm+aaaa completos
+            }
+            StringBuilder formatado = new StringBuilder();
+            for (int i = 0; i < digitos.length(); i++) {
+                if (i == 2 || i == 4) {
+                    formatado.append('/');
+                }
+                formatado.append(digitos.charAt(i));
+            }
+            change.setText(formatado.toString());
+            change.setRange(0, change.getControlText().length());
+            change.setCaretPosition(formatado.length());
+            change.setAnchor(formatado.length());
+            return change;
+        });
+        dp.getEditor().setTextFormatter(mascara);
     }
 
     private void gerar() {
