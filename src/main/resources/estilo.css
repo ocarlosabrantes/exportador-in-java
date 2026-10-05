@@ -1,6 +1,6 @@
 /* Paleta simples: azul-escuro para destaque, cinza-claro para fundo.*/
 * {
-    -fx-accent: #afafaf;
+    -fx-accent: #bebebe;
     -fx-fundo-claro: #F4F6F8;
     -fx-borda: #D7DCE1;
 }

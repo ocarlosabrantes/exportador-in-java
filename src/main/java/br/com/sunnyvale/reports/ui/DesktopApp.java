@@ -35,6 +35,9 @@ import java.util.Map;
  */
 public final class DesktopApp extends Application {
 
+    private static final String ICONE = "/icone.png";
+    private static final String LOGO = "/logo_160.png";
+
     private static final Path REPORTS_DIR = Path.of("reports");
     private static final Path CONFIG_FILE = Path.of("config.properties");
     //private static final Path OUT_DIR = Path.of("saida");
@@ -47,6 +50,7 @@ public final class DesktopApp extends Application {
     private final CheckBox chkPdf = new CheckBox("PDF");
     private final Button btnGerar = new Button("Gerar relatório");
     private final Button btnAbrirPasta = new Button("Abrir pasta de saída");
+    private final ProgressIndicator progresso = new ProgressIndicator();
 
     private ReportDefinition atual;
     private final Map<String, Control> campos = new LinkedHashMap<>();
@@ -104,6 +108,15 @@ public final class DesktopApp extends Application {
                                     "Usuário ou senha incorretos. Tente novamente.",
                                     ButtonType.OK
                             );
+                            // AJUSTE: Procura a tela principal e define como dona do Alert de Erro de Login - carlos.abrantes
+                            javafx.stage.Window dono = javafx.stage.Window.getWindows().stream()
+                                    .filter(w -> w.isShowing() && w != alert.getDialogPane().getScene().getWindow())
+                                    .findFirst()
+                                    .orElse(null);
+
+                            if (dono != null) {
+                                alert.initOwner(dono); // O JavaFX centraliza automaticamente - carlos.abrantes
+                            }
                             alert.setTitle("Erro de Login");
                             alert.setHeaderText(null);
                             aplicarIcone(alert);
@@ -123,6 +136,16 @@ public final class DesktopApp extends Application {
                                 "Login realizado com sucesso!",
                                 ButtonType.OK
                         );
+                        // AJUSTE: Procura a tela principal e define como dona do Alert de Login - carlos.abrantes
+                        javafx.stage.Window dono = javafx.stage.Window.getWindows().stream()
+                                .filter(w -> w.isShowing() && w != alert.getDialogPane().getScene().getWindow())
+                                .findFirst()
+                                .orElse(null);
+
+                        if (dono != null) {
+                            alert.initOwner(dono); // O JavaFX centraliza automaticamente - carlos.abrantes
+                        }
+
                         alert.setTitle("Login");
                         alert.setHeaderText(null);
                         aplicarIcone(alert);
@@ -157,7 +180,10 @@ public final class DesktopApp extends Application {
         tituloParametros.getStyleClass().add("titulo-parametros");
 
         HBox formatos = new HBox(16, chkExcel, chkPdf);
-        HBox botoes = new HBox(10, btnGerar, btnAbrirPasta);
+        progresso.setPrefSize(20, 20);
+        progresso.setVisible(false); // só aparece durante a geração
+        HBox botoes = new HBox(10, btnGerar, btnAbrirPasta, progresso);
+//        HBox botoes = new HBox(10, btnGerar, btnAbrirPasta);
         botoes.setAlignment(Pos.CENTER_LEFT);
         status.setWrapText(true);
         status.getStyleClass().add("status-label");
@@ -187,10 +213,9 @@ public final class DesktopApp extends Application {
         }
 
         stage.setScene(cena);
-        //stage.setTitle("Sunnyvale — Relatórios");
         //stage.show();
         stage.setTitle("Sunnyvale — Relatórios");
-        var iconeStream = getClass().getResourceAsStream("/icone.png");
+        var iconeStream = getClass().getResourceAsStream(ICONE);
         if (iconeStream != null) {
             stage.getIcons().add(new Image(iconeStream));
         }
@@ -228,7 +253,7 @@ public final class DesktopApp extends Application {
      * Logo em src/main/resources/logo_160.png; se faltar, mostra "Sunnyvale" em texto.
      */
     private Node criarMarca() {
-        var recurso = getClass().getResourceAsStream("/logo_160.png");
+        var recurso = getClass().getResourceAsStream(LOGO);
         if (recurso == null) {
             Label textoLogo = new Label("Sunnyvale");
             textoLogo.getStyleClass().add("marca-texto");
@@ -250,7 +275,7 @@ public final class DesktopApp extends Application {
                         String ymd = valorPadrao.matches("\\d{8}") ? valorPadrao : Formatters.toDbDate(valorPadrao);
                         dp.setValue(LocalDate.parse(ymd, DateTimeFormatter.ofPattern("yyyyMMdd")));
                     } catch (Exception ignored) {
-                        // deixa em branco se o padrão não for uma data válida
+//                        deixa em branco se o padrão não for uma data válida
                     }
                 }
                 yield dp;
@@ -302,7 +327,7 @@ public final class DesktopApp extends Application {
 
         btnGerar.setDisable(true);
         btnAbrirPasta.setDisable(true);
-        status.setText("Gerando \"" + atual.title() + "\"...");
+//        status.setText("Gerando \"" + atual.title() + "\"...");
 
         Task<String> tarefa = new Task<>() {
             @Override
@@ -328,15 +353,36 @@ public final class DesktopApp extends Application {
             }
         };
         tarefa.setOnSucceeded(e -> {
-            status.setText("Concluído — " + tarefa.getValue());
+            progresso.setVisible(false);
             btnGerar.setDisable(false);
             btnAbrirPasta.setDisable(false);
+//            status.setText("Concluído — " + tarefa.getValue());
+
+            Alert sucesso = new Alert(Alert.AlertType.INFORMATION);
+            sucesso.setTitle("Finalizado");
+            sucesso.setHeaderText("Relatório de " + atual.title());
+            sucesso.setContentText(tarefa.getValue());
+
+            aplicarIcone(sucesso);
+
+            sucesso.showAndWait();
         });
+
         tarefa.setOnFailed(e -> {
-            Throwable ex = tarefa.getException();
-            status.setText("Erro: " + (ex == null ? "falha desconhecida" : ex.getMessage()));
+            progresso.setVisible(false);
             btnGerar.setDisable(false);
+            Throwable ex = tarefa.getException();
+            String mensagem = ex == null ? "falha desconhecida" : ex.getMessage();
+            status.setText("Erro: " + mensagem);
+
+            Alert erro = new Alert(Alert.AlertType.ERROR);
+            erro.setTitle("Erro ao gerar relatório");
+            erro.setHeaderText("Não foi possível gerar " + atual.title());
+            erro.setContentText(mensagem);
+
+            erro.showAndWait();
         });
+
         new Thread(tarefa, "gerar-relatorio").start();
     }
 
@@ -351,13 +397,22 @@ public final class DesktopApp extends Application {
 
     private Boolean pedirLogin() {
         Dialog<ButtonType> dialog = new Dialog<>();
+//        AJUSTE: Procura a tela principal e vincula ANTES de exibir - carlos.abrantes
+        javafx.stage.Window dono = javafx.stage.Window.getWindows().stream()
+                .filter(w -> w.isShowing() && w != dialog.getDialogPane().getScene().getWindow())
+                .findFirst()
+                .orElse(null);
+
+        if (dono != null) {
+            dialog.initOwner(dono); // Vincula o dono (faz o JavaFX centralizar automático) - carlos.abrantes
+        }
         dialog.setTitle("Login necessário");
         TextField usuario = new TextField();
         PasswordField senha = new PasswordField();
         VBox conteudo = new VBox(8, new Label("Usuário:"), usuario, new Label("Senha:"), senha);
         dialog.getDialogPane().setContent(conteudo);
         dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-        var recurso = getClass().getResourceAsStream("/icone.png");
+        var recurso = getClass().getResourceAsStream(ICONE);
 
         if (recurso != null) {
             Image icone = new Image(recurso);
@@ -384,7 +439,7 @@ public final class DesktopApp extends Application {
     }
 
     private void aplicarIcone(Alert alert) {
-        var recurso = getClass().getResourceAsStream("/icone.png");
+        var recurso = getClass().getResourceAsStream(ICONE);
 
         if (recurso != null) {
             Image icone = new Image(recurso);
